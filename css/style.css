@@ -26,6 +26,8 @@ a{
     min-height:100vh;
 }
 .aside ul li{
+    display: flex;
+    align-items: center;
     position:relative;
     color:#d6d6d6;
     font-weight: bold;
@@ -46,6 +48,17 @@ a{
     right:-28px;
     top:0;
 }
+.aside h3{
+    color:var(--main-color);
+}
+/* @media(max-width:767px){
+    .aside{
+        display:none;
+    }
+    .main-page{
+        width:100%;
+    }
+} */
 .main-page{
     background-color: #f6f6f6;
     min-height:100vh;
@@ -78,6 +91,14 @@ a{
     border-radius:10px;
     margin-left:5px;
 }
+/* @media(max-width:767px){
+    .main-page .search button,.main-page .search input{
+        padding:5px;
+    }
+    .recipe{
+        margin: 0 auto;
+    }
+} */
 .main-page .search button i{
     font-size:18px;
 }
@@ -91,34 +112,37 @@ a{
 .recipe {
     display: flex;
     flex-direction: column;
-    align-items:center;
-    justify-content:center;
+    align-items:flex-start;
     padding:10px;
     background-color: #c0ea7c8f;
     border-radius: 50px;
     overflow: hidden;
-    cursor: pointer;
+    width:400px;
 }
 .recipe .img{
     position:relative;
 }
 .recipe .img img{
-    width:100%;
-    border-radius:50px;
+    border-radius:40px;
 }
 
-.recipe .img .time{
+.recipe .img .time {
     position:absolute;
-    z-index:1;
+    width:80px;
+    z-index:3;
     background-color: #fff;
     border-radius: 20px;
-    top:150px;
+    bottom:5px;
     left:20px;
     padding:5px 15px;
-    max-width:150px;
+    width:150px;
     display:flex;
     align-items: center;
+    justify-content: space-between;
     color:var(--main-color);
+}
+.recipe .img .time span{
+    display:block;
 }
 .recipe .img .time i{
     margin-right:5px;
@@ -133,10 +157,15 @@ a{
     font-size: 22px;
     color:var(--main-color);
 }
-.recipe .info .rating i{
+.star{
     color: gold;
 }
-.recipe .info .rating span{
+.rating{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.rating-number{
     color: var(--main-color);
     font-weight: bold;
 }
@@ -155,7 +184,17 @@ a{
     border-radius:15px;
     background-color: #9bcf53d2;
 }
-/* .recipe span{
-    margin-right:5px;
-    margin-left:5px;
-} */
+.recipe-button{
+    display: block;
+    color:white;
+    padding:5px 15px;
+    border-radius: 15px;
+    background-color:#416D19;
+    margin-bottom: 10px;
+    cursor: pointer; 
+    margin-left: 20px;
+
+}
+.recipe-button:hover{
+    color:white;
+}

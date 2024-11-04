@@ -11,7 +11,6 @@ let savedRecipes=[];
 let links=document.querySelectorAll("ul li");
 let searchButton=document.getElementById("search-button");
 let input=document.getElementById("search-input");
-console.log(links);
 let mainPage=document.querySelector(".main-page");
 let recipesArea=document.querySelector(".main-page .row");
 let homeLink=document.querySelector(".links .home");
@@ -22,6 +21,7 @@ let dinnerLink=document.querySelector(".links .dinner");
 let lunchLink=document.querySelector(".links .lunch");
 let dietLink=document.querySelector(".links .diet");
 let headTitle=document.querySelector(".recommendations h2");
+
 
 fetch('https://dummyjson.com/recipes')
 .then(res => res.json())
@@ -55,7 +55,7 @@ fetch('https://dummyjson.com/recipes')
          }
      })
     });
-    console.log(data);
+
     clearSearchInput();
     addRecipiesToPage(recommendedMealsArray);
     homeLink.classList.add("active");
@@ -97,6 +97,18 @@ fetch('https://dummyjson.com/recipes')
     searchButton.onclick=()=>{
       search(recipesArray);
     }
+    recipesArea.addEventListener("click",(e=>{
+      if(e.target.className==='recipe-button'){
+         // console.log(e.target.parentElement.classList);
+         recipesArray.forEach(recipe=>{
+            if(e.target.parentElement.classList.contains(recipe.name.replaceAll(" ",""))){
+               console.log(recipe);
+               console.log(e.target.parentElement);
+               addIngredientsToPage(recipe);
+            }
+         })
+      }
+    }))
 });
 function addRecipiesToPage(array){
    removeActives(links);
@@ -107,18 +119,22 @@ function addRecipiesToPage(array){
     recipesArea.classList.add("gap-3");
     array.forEach(recipe=>{
         let recipeDiv=document.createElement("div");
-        recipeDiv.className="recipe col-lg-3";
+        recipeDiv.className=`recipe col-lg-3 col-md-4 ${recipe.name.replaceAll(" ","")}`;
         let imgDiv=document.createElement("div");
         imgDiv.className="img";
         let img=document.createElement("img");
+        img.className="img-fluid";
         img.setAttribute("src",recipe.image);
-        img.setAttribute("loading","lazy");
+      //   img.setAttribute("loading","lazy");
         imgDiv.appendChild(img);
         let timeDiv=document.createElement("div");
+        timeDiv.className="time";
         let timeNumber=document.createElement("span");
         timeNumber.className="time-number";
-        timeNumber.appendChild(document.createTextNode(parseInt(recipe.cookTimeMinutes)+parseInt(recipe.prepTimeMinutes)));
-      //   timeDiv.appendChild('<i class="fa-solid fa-clock"></i>');
+        timeNumber.appendChild(document.createTextNode(`${parseInt(recipe.cookTimeMinutes)+parseInt(recipe.prepTimeMinutes)} mins`));
+        let iconSpan=document.createElement("span");
+        iconSpan.innerHTML='<i class="fa-solid fa-clock"></i>';
+        timeDiv.appendChild(iconSpan);
         timeDiv.appendChild(timeNumber);
         imgDiv.appendChild(timeDiv);
         recipeDiv.appendChild(imgDiv);
@@ -128,9 +144,13 @@ function addRecipiesToPage(array){
         recipeName.appendChild(document.createTextNode(recipe.name));
         let ratingDiv=document.createElement("div");
         ratingDiv.classsName="rating";
-      //   ratingDiv.appendChild('<i class="fa-solid fa-star"></i>');
+        let iconSpan2=document.createElement("span");
+        iconSpan2.className="star";
+        iconSpan2.innerHTML='<i class="fa-solid fa-star"></i>';
         let ratingNum=document.createElement("span");
         ratingNum.className="rating-number";
+        ratingNum.appendChild(document.createTextNode(recipe.rating));
+        ratingDiv.appendChild(iconSpan2);
         ratingDiv.appendChild(ratingNum);
         infoDiv.appendChild(recipeName);
         infoDiv.appendChild(ratingDiv);
@@ -143,6 +163,11 @@ function addRecipiesToPage(array){
           tags.appendChild(tagSpan);
         })
         recipeDiv.appendChild(tags);
+        let recipeButton=document.createElement("a");
+        recipeButton.className="recipe-button";
+        recipeButton.innerHTML="Show Recipe";
+      //   recipeButton.href="./ingredient.html";
+        recipeDiv.appendChild(recipeButton);
         recipesArea.appendChild(recipeDiv);
         mainPage.appendChild(recipesArea);
     })
@@ -184,6 +209,38 @@ function clearSearchInput(){
 function removeNotFound(){
    headTitle.innerHTML="";
 }
-// function showIngredients(){
-   
-// }
+function addIngredientsToPage(recipe){
+   let container=document.createElement("div");
+   container.className="main container position-relative";
+   let containerImg=document.createElement("img");
+   containerImg.setAttribute("src",recipe.image);
+   container.appendChild(containerImg);
+   let ingredientContainer=document.createElement("ul");
+   ingredientContainer.className="ingredients";
+   let header1=document.createElement("h3");
+   header1.innerHTML="Ingredients";
+   ingredientContainer.appendChild(header1);
+   recipe.ingredients.forEach(ingredient=>{
+      let ingredientLine=document.createElement("li");
+      ingredientLine.appendChild(document.createTextNode(ingredient));
+      ingredientContainer.appendChild(ingredientLine);
+   })
+   container.appendChild(ingredientContainer);
+   let instructionsContainer=document.createElement("ul");
+   instructionsContainer.className="instructions";
+   let header2=document.createElement("h3");
+   header2.innerHTML="Instructions";
+   instructionsContainer.appendChild(header2);
+   recipe.instructions.forEach(ingredient=>{
+      let instructionLine=document.createElement("li");
+      instructionLine.appendChild(document.createTextNode(ingredient));
+      instructionsContainer.appendChild(instructionLine);
+   })
+   container.appendChild(instructionsContainer);
+   //new window
+   let w=window.open("./ingredient.html");
+   w.document.innerHTML="";
+   setTimeout(function(){ 
+      w.document.body.appendChild(container);
+  }, 1000);
+}
