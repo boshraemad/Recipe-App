@@ -193,6 +193,18 @@ function search(array){
             // console.log(tag);
          }
       })
+      element.ingredients.forEach(ingredient=>{
+         if(ingredient.toLowerCase()===searchValue.toLowerCase()){
+            searchArray.push(element);
+            // console.log(tag);
+         }
+      })
+      element.mealType.forEach(meal=>{
+         if(meal.toLowerCase()===searchValue.toLowerCase()){
+            searchArray.push(element);
+            // console.log(tag);
+         }
+      })
    })
    if(searchArray.length===0){
       headTitle.innerHTML="Nothing Found";
