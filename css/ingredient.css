@@ -11,7 +11,7 @@ a{
 }
 .container{
     background-color: #c0ea7c8f;
-    max-width:calc(100% - 20px);
+    max-width:calc(100% - 60px);
     max-height: fit-content;
     margin-left: auto;
     margin-right:auto;
@@ -29,7 +29,7 @@ a{
     top:-90px;
     right:20px;
 }
-@media(max-width:480px){
+@media(max-width:600px){
     .container img{
        display:none;
     }
